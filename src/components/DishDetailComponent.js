@@ -25,10 +25,10 @@ export class DishDetail  extends Component {
                         {comments.map(comObj => {
                             var date = new Date(comObj.date).toDateString();
                             return (
-                                <div key={comObj.id}>
-                                    <p>{comObj.comment}</p>
-                                    <p>-- {comObj.author} ,{date}</p>
-                                </div>)
+                                <ul key={comObj.id} className="list-unstyled">
+                                    <li>{comObj.comment}</li>
+                                    <li>-- {comObj.author} ,{date}</li>
+                                </ul>)
                         })}
                     </div>
                 </div>
