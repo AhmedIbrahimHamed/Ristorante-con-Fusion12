@@ -23,10 +23,11 @@ export class DishDetail  extends Component {
                     <div className="col-12 col-md-5 m-1">
                         <h2>Comments</h2>
                         {comments.map(comObj => {
+                            var date = new Date(comObj.date).toDateString();
                             return (
                                 <div key={comObj.id}>
                                     <p>{comObj.comment}</p>
-                                    <p>-- {comObj.author} ,{comObj.date.substring(0,comObj.date.indexOf("T"))}</p>
+                                    <p>-- {comObj.author} ,{date}</p>
                                 </div>)
                         })}
                     </div>
