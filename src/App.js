@@ -1,17 +1,24 @@
 import React, {Component} from 'react';
+import {Navbar,NavbarBrand} from 'reactstrap';
 import './App.css';
 
 class App extends Component {
   
 
- render(){
-   return (
-     <div className="App">
-       <h2>Ahmed</h2>
-     </div>
-   )
-   
- }
+  render() {
+    return (
+      <div className="App">
+        <Navbar dark color="primary">
+          <div className="container">
+            <div className="row">
+              <NavbarBrand href="/">Rostranote Con Fusion</NavbarBrand>
+            </div>
+          </div>
+        </Navbar>
+      </div>
+    );
+
+  }
 
 }
 
