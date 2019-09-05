@@ -4,10 +4,31 @@ import { Card, CardImg, CardText, CardBody,
 
 export class DishDetail  extends Component {
 
+    renderComments(dish) {
+        const comments = dish.comments;
+        if(comments){
+            let commentList = comments.map(comObj => {
+                var date = new Date(comObj.date).toDateString();
+                return (
+                    <ul key={comObj.id} className="list-unstyled">
+                        <li>{comObj.comment}</li>
+                        <li>-- {comObj.author} ,{date}</li>
+                    </ul>)
+            });
+            return  (
+            <div className="col-12 col-md-5 m-1">
+               <h5>Comments</h5>
+               {commentList} 
+            </div>)
+        }else{
+            return <div></div>
+        }
+        
+    }
+
     renderDish(){
         const dish = this.props.dish;
         if(dish){
-            const comments = dish.comments;
             return(
                 <div className="row">
                     <div className="col-12 col-md-5 m-1">
@@ -19,18 +40,7 @@ export class DishDetail  extends Component {
                             </CardBody>
                         </Card>
                     </div>
-
-                    <div className="col-12 col-md-5 m-1">
-                        <h2>Comments</h2>
-                        {comments.map(comObj => {
-                            var date = new Date(comObj.date).toDateString();
-                            return (
-                                <ul key={comObj.id} className="list-unstyled">
-                                    <li>{comObj.comment}</li>
-                                    <li>-- {comObj.author} ,{date}</li>
-                                </ul>)
-                        })}
-                    </div>
+                    {this.renderComments(dish)}
                 </div>
             )
         }else{
@@ -40,9 +50,9 @@ export class DishDetail  extends Component {
     
     render() {
         return (
-            <div>
+            <React.Fragment>
                 {this.renderDish()}
-            </div>
+            </React.Fragment>
         )
     }
 }
