@@ -3,9 +3,11 @@ import Menu from './MenuComponent';
 import Header from './HeaderComponent';
 import Footer from './FooterComponent';
 import Home from './HomeComponent';
+import DishDetail from './DishDetailComponent';
 import { DISHES } from '../shared/dishes';
 import {LEADERS} from '../shared/leaders';
 import {PROMOTIONS} from '../shared/promotions';
+import {COMMENTS} from '../shared/comments';
 import { Switch, Route, Redirect } from 'react-router-dom';
 import Contact from './ContactComponent';
 
@@ -17,26 +19,33 @@ class Main extends Component {
         this.state = {
             dishes: DISHES,
             leaders: LEADERS,
-            promotions: PROMOTIONS
-            // selectedDish: null
+            promotions: PROMOTIONS,
+            comments: COMMENTS
         };
     }
-
-    // //Set dish id of selected dish to send to the DishDetailComponent.
-    // onDishSelect(dishId) {
-    //     this.setState({ selectedDish: dishId });
-    // }
-
+    
     render() {
+
+        console.log(this.state.dishes);
+
+        const DishWithId = ({match}) => {
+            return(
+                <DishDetail dish={this.state.dishes.filter((dish) => dish.id === parseInt(match.params.dishId,10))[0]} 
+                  comments={this.state.comments.filter((comment) => comment.dishId === parseInt(match.params.dishId,10))} />
+            );
+          };
+
         return (
             <div>
                 <Header />
+
                 <Switch>
                     <Route path='/home' component={() => <Home
                     dish={this.state.dishes.filter((dish) => dish.featured)[0]}
                     promotion={this.state.promotions.filter((promo) => promo.featured)[0]}
                     leader={this.state.leaders.filter((leader) => leader.featured)[0]} />} />
                     <Route exact path='/menu' component={() => <Menu dishes={this.state.dishes} />} />
+                    <Route path='/menu/:dishId' component={DishWithId} />
                     <Route exact path='/contactus' component={Contact}/>
                     <Redirect to="/home" />
                 </Switch>
