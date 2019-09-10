@@ -3,9 +3,11 @@ import {Card, CardImg, CardText, CardBody,
     CardTitle, Breadcrumb, BreadcrumbItem
 } from 'reactstrap'
 import {Link} from 'react-router-dom'
+import CommentForm from './CommentFormComponent';
 
 
 function RenderComments({comments}) {
+    var resultComments = <div>Comments</div>
     if (comments.length) {
         let commentList = comments.map(comObj => {
             var date = new Date(comObj.date).toDateString();
@@ -15,14 +17,18 @@ function RenderComments({comments}) {
                     <li>-- {comObj.author} ,{date}</li>
                 </ul>)
         });
-        return (
-            <div>
-                <h5>Comments</h5>
-                {commentList}
-            </div>)
-    } else {
-        return <div></div>
+        resultComments = <div>
+                            <h5>Comments</h5>
+                            {commentList}
+                        </div>
     }
+
+    return (
+        <div>
+            {resultComments}
+            <CommentForm />
+        </div>
+    )
 
 }
 
