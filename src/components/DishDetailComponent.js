@@ -1,13 +1,15 @@
-import React from 'react'
+import React, {Component} from 'react'
 import {Card, CardImg, CardText, CardBody,
-    CardTitle, Breadcrumb, BreadcrumbItem
+    CardTitle, Breadcrumb, BreadcrumbItem, Modal, ModalBody, ModalHeader, Button, Row, Col, Label
 } from 'reactstrap'
+import {LocalForm, Control, Errors} from 'react-redux-form'
 import {Link} from 'react-router-dom'
-import CommentForm from './CommentFormComponent';
 
+const maxLength = (len) => (val) => !(val) || (val.length <= len);
+const minLength = (len) => (val) => val && (val.length >= len);
 
 function RenderComments({comments}) {
-    var resultComments = <div>Comments</div>
+    var resultComments = <h3>Comments</h3>
     if (comments.length) {
         let commentList = comments.map(comObj => {
             var date = new Date(comObj.date).toDateString();
@@ -18,7 +20,7 @@ function RenderComments({comments}) {
                 </ul>)
         });
         resultComments = <div>
-                            <h5>Comments</h5>
+                            <h3>Comments</h3>
                             {commentList}
                         </div>
     }
@@ -48,7 +50,94 @@ function RenderDish({dish}){
     }
 }
 
+
+class CommentForm extends Component {
+
+    constructor(props) {
+        super(props)
+    
+        this.state = {
+            isModalOpen: false
+        };
+
+        this.toggleModal = this.toggleModal.bind(this);
+        this.handleCommentSumbit = this.handleCommentSumbit.bind(this);
+    }
+
+    toggleModal(){
+        this.setState({
+            isModalOpen: !this.state.isModalOpen
+        });
+    }
+
+    handleCommentSumbit(values){
+        alert('Current State is: ' + JSON.stringify(values));
+        this.toggleModal();
+    }
+    
+    render() {
+        return (
+            <React.Fragment>
+                <Button outline onClick={this.toggleModal}><i className="fa fa-edit fa-lg"></i> Submit Comment</Button>
+                <div className="col-md-9 mb-3">
+                <Modal isOpen={this.state.isModalOpen} toggle={this.toggleModal}>
+                    <ModalHeader toggle={this.toggleModal}>Submit Comment</ModalHeader>
+                    <ModalBody>
+                        <LocalForm onSubmit={(values) => this.handleCommentSumbit(values)}>
+                            <Row className="form-group">
+                                <Label htmlFor={"rating"} md={3}>Rating</Label>
+                                <Col xs={12}>
+                                    <Control.select model=".rating" id="rating" name="rating"
+                                    className="form-control">
+                                        <option>1</option>
+                                        <option>2</option>
+                                        <option>3</option>
+                                        <option>4</option>
+                                        <option>5</option>
+                                    </Control.select>
+                                </Col>
+                            </Row>
+                            <Row className="form-group">
+                                <Label htmlFor={"yourName"} md={3}>Your Name</Label>
+                                <Col xs={12}>
+                                    <Control.text model=".yourName" id="yourName" name="yourName"
+                                    className="form-control"
+                                    validators={{minLength: minLength(3),maxLength: maxLength(15)}}/>
+                                    <Errors className="text-danger"
+                                        model=".yourName"
+                                        show="touched"
+                                        messages={{
+                                            minLength: 'Must be greater than 2 characters ',
+                                            maxLength: 'Must be 15 characters or less '
+                                        }}/>                                    
+                                </Col>
+                            </Row>
+                            <Row className="form-group">
+                                <Label htmlFor={"comment"} md={3}>Comment</Label>
+                                <Col xs={12}>
+                                    <Control.textarea model=".comment" id="comment" name="comment"
+                                    className="form-control" rows={6}/>                                        
+                                </Col>
+                            </Row>
+                            <Row className="form-group">
+                                <Col md={10}>
+                                    <Button type="submit" color="primary">
+                                        Submit
+                                    </Button>
+                                </Col>
+                            </Row>
+                        </LocalForm>
+                    </ModalBody>
+                </Modal>
+                </div>
+            </React.Fragment>
+        )
+    }
+}
+
+
 const DishDetail = (props) => {
+
     return (
         <div className="container">
         <div className="row">
