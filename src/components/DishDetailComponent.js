@@ -8,7 +8,7 @@ import {Link} from 'react-router-dom'
 const maxLength = (len) => (val) => !(val) || (val.length <= len);
 const minLength = (len) => (val) => val && (val.length >= len);
 
-function RenderComments({comments}) {
+function RenderComments({comments, addComment, dishId}) {
     var resultComments = <h3>Comments</h3>
     if (comments.length) {
         let commentList = comments.map(comObj => {
@@ -28,7 +28,7 @@ function RenderComments({comments}) {
     return (
         <div>
             {resultComments}
-            <CommentForm />
+            <CommentForm dishId={dishId} addComment={addComment} />
         </div>
     )
 
@@ -71,7 +71,7 @@ class CommentForm extends Component {
     }
 
     handleCommentSumbit(values){
-        alert('Current State is: ' + JSON.stringify(values));
+        this.props.addComment(this.props.dishId, values.rating, values.author, values.comment);
         this.toggleModal();
     }
     
@@ -98,13 +98,13 @@ class CommentForm extends Component {
                                 </Col>
                             </Row>
                             <Row className="form-group">
-                                <Label htmlFor={"yourName"} md={3}>Your Name</Label>
+                                <Label htmlFor={"author"} md={3}>Your Name</Label>
                                 <Col xs={12}>
-                                    <Control.text model=".yourName" id="yourName" name="yourName"
+                                    <Control.text model=".author" id="author" name="author"
                                     className="form-control"
                                     validators={{minLength: minLength(3),maxLength: maxLength(15)}}/>
                                     <Errors className="text-danger"
-                                        model=".yourName"
+                                        model=".author"
                                         show="touched"
                                         messages={{
                                             minLength: 'Must be greater than 2 characters ',
@@ -155,7 +155,10 @@ const DishDetail = (props) => {
                 <RenderDish dish={props.dish} />
             </div>
             <div className="col-12 col-md-5 m-1">
-                <RenderComments comments={props.comments} />
+                    <RenderComments comments={props.comments}
+                        addComment={props.addComment}
+                        dishId={props.dish.id}
+                    />
             </div>
         </div>
         </div>
