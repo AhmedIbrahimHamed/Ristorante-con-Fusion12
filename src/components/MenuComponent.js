@@ -53,7 +53,7 @@ const Menu = (props) => {
     }
     else {
         return (
-            <div className="container">
+            <div className="container justify-content-center">
                 <div className="row">
                     <Breadcrumb>
                         <BreadcrumbItem><Link to="/home">Home</Link></BreadcrumbItem>

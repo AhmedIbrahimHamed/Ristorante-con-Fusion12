@@ -5,8 +5,6 @@ import { Loading } from './LoadingComponent';
 
 
 function RenderCard({item, isLoading, errMess}) {
-    
-   
     if (errMess) {
         return(
                 <h4>{errMess}</h4>
@@ -34,7 +32,7 @@ function RenderCard({item, isLoading, errMess}) {
 
 function Home(props) {
     return(
-        <div className="container">
+        <div className="container justify-content-center">
             <div className="row align-items-start">
                 <div className="col-12 col-md m-1">
                     <RenderCard item={props.dish} isLoading={props.dishesLoading} errMess={props.dishesErrMess} />
