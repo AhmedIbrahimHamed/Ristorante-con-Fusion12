@@ -7,6 +7,7 @@ import { LocalForm, Control, Errors } from 'react-redux-form'
 import { Link } from 'react-router-dom'
 import { Loading } from './LoadingComponent';
 import { baseUrl } from '../shared/baseUrl';
+import { FadeTransform, Fade, Stagger } from 'react-animation-components';
 
 const maxLength = (len) => (val) => !(val) || (val.length <= len);
 const minLength = (len) => (val) => val && (val.length >= len);
@@ -14,29 +15,41 @@ const minLength = (len) => (val) => val && (val.length >= len);
 function RenderDish({ dish }) {
     return (
         <Card>
-            <CardImg top src={baseUrl + dish.image} alt={dish.name} />
-            <CardBody>
-                <CardTitle>{dish.name}</CardTitle>
-                <CardText>{dish.description}</CardText>
-            </CardBody>
+            <FadeTransform
+                in
+                transformProps={{
+                    exitTransform: 'scale(0.5) translateY(-50%)'
+                }}>
+                <Card>
+                    <CardImg top src={baseUrl + dish.image} alt={dish.name} />
+                    <CardBody>
+                        <CardTitle>{dish.name}</CardTitle>
+                        <CardText>{dish.description}</CardText>
+                    </CardBody>
+                </Card>
+            </FadeTransform>
         </Card>
     )
 }
 
-function RenderComments({comments, postComment, dishId}) {
+function RenderComments({ comments, postComment, dishId }) {
     var resultComments = <h3>Comments</h3>
     if (comments.length) {
         let commentList = comments.map(comObj => {
             var date = new Date(comObj.date).toDateString();
             return (
-                <ul key={comObj.id} className="list-unstyled">
-                    <li>{comObj.comment}</li>
-                    <li>-- {comObj.author} ,{date}</li>
-                </ul>)
+                <Fade in>
+                    <ul key={comObj.id} className="list-unstyled">
+                        <li>{comObj.comment}</li>
+                        <li>-- {comObj.author} ,{date}</li>
+                    </ul>
+                </Fade>)
         });
         resultComments = <div>
             <h3>Comments</h3>
-            {commentList}
+            <Stagger in>
+                {commentList}
+            </Stagger>
         </div>
     }
 
@@ -135,7 +148,7 @@ class CommentForm extends Component {
 
 
 const DishDetail = (props) => {
-   
+
     if (props.errMess) {
         return (
             <div className="container">
