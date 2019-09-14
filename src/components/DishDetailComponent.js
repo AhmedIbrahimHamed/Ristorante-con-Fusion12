@@ -23,7 +23,7 @@ function RenderDish({ dish }) {
     )
 }
 
-function RenderComments({ comments, addComment, dishId }) {
+function RenderComments({comments, postComment, dishId}) {
     var resultComments = <h3>Comments</h3>
     if (comments.length) {
         let commentList = comments.map(comObj => {
@@ -43,7 +43,7 @@ function RenderComments({ comments, addComment, dishId }) {
     return (
         <div>
             {resultComments}
-            <CommentForm dishId={dishId} addComment={addComment} />
+            <CommentForm dishId={dishId} postComment={postComment} />
         </div>
     )
 
@@ -69,7 +69,7 @@ class CommentForm extends Component {
     }
 
     handleCommentSumbit(values) {
-        this.props.addComment(this.props.dishId, values.rating, values.author, values.comment);
+        this.props.postComment(this.props.dishId, values.rating, values.author, values.comment);
         this.toggleModal();
     }
 
@@ -164,7 +164,7 @@ const DishDetail = (props) => {
                     </div>
                     <div className="col-12 col-md-5 m-1">
                         <RenderComments comments={props.comments}
-                            addComment={props.addComment}
+                            postComment={props.postComment}
                             dishId={props.dish.id}
                         />
                     </div>
