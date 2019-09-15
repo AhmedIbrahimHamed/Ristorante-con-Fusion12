@@ -1,12 +1,16 @@
 import React from 'react';
 import { Breadcrumb, BreadcrumbItem, Card, CardBody, CardHeader, Media } from 'reactstrap';
 import { Link } from 'react-router-dom';
+import { Loading } from './LoadingComponent'
+import { baseUrl } from '../shared/baseUrl'
+import { Fade, Stagger } from 'react-animation-components';
 
-function RenderLeader({leader}) {
+
+function RenderLeader({ leader }) {
     return (
         <Media className="mt-5">
             <Media left className="mr-5">
-                <Media object src={leader.image} alt={leader.name} />
+                <Media object src={baseUrl + leader.image} alt={leader.name} />
             </Media>
             <Media body>
                 <Media heading>
@@ -21,11 +25,26 @@ function RenderLeader({leader}) {
 
 }
 
-function About(props) {
+function About({ leaders, isLoading, errMess }) {
 
-    const leaders = props.leaders;
+    let commentsDiv = null;
+    if (isLoading) {
+        commentsDiv = <div>
+            <Loading />
+        </div>
+    } else if (errMess) {
+        commentsDiv = <h4>{errMess}</h4>
+    } else if (leaders != null) {
+        commentsDiv = <Media list>
+            <Stagger in>
+                {leaders.map(leader => <Fade key={leader.id}>
+                    <RenderLeader leader={leader} />
+                </Fade>)}
+            </Stagger>
+        </Media>
+    }
 
-    return(
+    return (
         <div className="container">
             <div className="row">
                 <Breadcrumb>
@@ -35,7 +54,7 @@ function About(props) {
                 <div className="col-12">
                     <h3>About Us</h3>
                     <hr />
-                </div>                
+                </div>
             </div>
             <div className="row row-content">
                 <div className="col-12 col-md-6">
@@ -80,9 +99,7 @@ function About(props) {
                     <h2>Corporate Leadership</h2>
                 </div>
                 <div className="col-12">
-                    <Media list>
-                        {leaders.map(leader => <RenderLeader key={leader.id} leader={leader}/>)}
-                    </Media>
+                    {commentsDiv}
                 </div>
             </div>
         </div>
