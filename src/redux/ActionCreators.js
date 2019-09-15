@@ -71,7 +71,7 @@ export const postFeedback = (values) =>
             throw error;
       })
     .then(response => response.json())
-    .then(feedback => {alert('Your feedback:\n' + feedback);})
+    .then(feedback => {alert('Your feedback has been Posted Successfully :' + JSON.stringify(feedback));})
     .catch(error =>  { console.log('post feedback', error.message); alert('Your feedback could not be posted\nError: '+error.message); });
 }
 
