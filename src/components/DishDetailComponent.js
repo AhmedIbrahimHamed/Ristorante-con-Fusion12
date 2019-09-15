@@ -38,8 +38,8 @@ function RenderComments({ comments, postComment, dishId }) {
         let commentList = comments.map(comObj => {
             var date = new Date(comObj.date).toDateString();
             return (
-                <Fade in>
-                    <ul key={comObj.id} className="list-unstyled">
+                <Fade in key={comObj.id}>
+                    <ul className="list-unstyled">
                         <li>{comObj.comment}</li>
                         <li>-- {comObj.author} ,{date}</li>
                     </ul>

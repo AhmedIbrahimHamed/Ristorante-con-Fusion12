@@ -8,7 +8,7 @@ import { Loading } from './LoadingComponent';
 import { baseUrl } from '../shared/baseUrl';
 
 
-function RenderMenuItem({ dish, onClick }) {
+function RenderMenuItem({ dish }) {
     return (
         <Card>
             <Link to={`/menu/${dish.id}`} >
@@ -22,14 +22,6 @@ function RenderMenuItem({ dish, onClick }) {
 }
 
 const Menu = (props) => {
-
-    const menu = props.dishes.dishes.map((dish) => {
-        return (
-            <div className="col-12 col-md-5 m-1" key={dish.id}>
-                <RenderMenuItem dish={dish} onClick={props.onClick} />
-            </div>
-        );
-    });
 
     if (props.dishes.isLoading) {
         return (
@@ -51,7 +43,14 @@ const Menu = (props) => {
             </div>
         );
     }
-    else {
+    else if(props.dishes.dishes){
+        const menu = props.dishes.dishes.map((dish) => {
+            return (
+                <div className="col-12 col-md-5 m-1" key={dish.id}>
+                    <RenderMenuItem dish={dish} />
+                </div>
+            );
+        });
         return (
             <div className="container justify-content-center">
                 <div className="row">
